@@ -17,9 +17,9 @@ public class HelloSpark {
         String testFile = "/opt/spark/test.txt";
 
         SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
-        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
+        JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-        JavaRDD<String> data = sparkContext.textFile(testFile).cache();
+        JavaRDD<String> data = sc.textFile(testFile).cache();
 
         long countA = data.filter(new Function<String, Boolean>() {
             public Boolean call(String s) throws Exception {
