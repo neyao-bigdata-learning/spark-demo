@@ -35,7 +35,7 @@ public class HelloSpark {
 
         System.out.println();
         System.out.println();
-        System.out.println("=================== RESULT ===================");
+        System.out.println("========================= RESULT =========================");
         System.out.println("Lines with yao: " + countA + ", lines with zhangsan: " + countB);
         System.out.println("=========================================================");
         System.out.println();
