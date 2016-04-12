@@ -20,3 +20,6 @@ Reference
 - Quick start docs:  
 -- Official quick start doc: https://spark.apache.org/docs/latest/quick-start.html
 -- A Chinese version quick start doc:http://colobu.com/2014/12/08/spark-quick-start/
+
+- Spark functions:  
+https://spark.apache.org/docs/latest/api/java/index.html?org/apache/spark/api/java/function/package-summary.html
