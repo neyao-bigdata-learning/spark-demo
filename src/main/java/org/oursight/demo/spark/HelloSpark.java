@@ -71,6 +71,12 @@ public class HelloSpark {
             }
         });
 
+        System.out.println("================== count ==================");
+        System.out.println("words.toDebugString() -----> " + words.toDebugString());
+        System.out.println();
+        System.out.println("words.toArray()-----> " + words.toArray());
+        System.out.println("============================================");
+
         JavaPairRDD<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
             @Override
             public Tuple2<String, Integer> call(String s) throws Exception {
@@ -78,6 +84,14 @@ public class HelloSpark {
                 return new Tuple2<String, Integer>(s, 1);
             }
         });
+
+        System.out.println("================== pairs ==================");
+        System.out.println("pairs.toDebugString() -----> " + pairs.toDebugString());
+        System.out.println();
+        System.out.println("pairs.toArray()-----> " + pairs.toArray());
+        System.out.println("============================================");
+
+
 
         JavaPairRDD<String, Integer> counts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
             public Integer call(Integer a, Integer b) {
