@@ -20,22 +20,26 @@ public class HelloSpark {
 
     public static void main(String[] args) {
 
-//        showBasicUsage();
-        wordCount();
+        showBasicUsage();
+//        wordCount();
     }
 
     public static void showBasicUsage() {
-        String testFile = "/opt/spark/test.txt";
+        String testFile = "/home/neyao/spark/data/words.txt";
 
         SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
+        sparkConf.setMaster("local");
+        //sparkConf.setAppName("MyHelloSparkApp");
+
         JavaSparkContext sc = new JavaSparkContext(sparkConf);
+
 
         JavaRDD<String> data = sc.textFile(testFile).cache();
 
         long countA = data.filter(new Function<String, Boolean>() {
             public Boolean call(String s) throws Exception {
 //                System.out.println("s in countA = [" + s + "]");
-                return s.contains("yao");
+                return s.contains("lsi");
 
             }
         }).count();
@@ -58,9 +62,10 @@ public class HelloSpark {
     }
 
     public static void wordCount() {
-        String testFile = "/opt/spark/test.txt";
+        String testFile = "/home/neyao/spark/data/words.txt";
 
         SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
+        sparkConf.setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
         JavaRDD<String> data = sc.textFile(testFile);
@@ -104,7 +109,7 @@ public class HelloSpark {
         System.out.println();
         System.out.println();
         System.out.println("========================= RESULT =========================");
-        counts.saveAsTextFile("/opt/spark/word-count.txt");
+        counts.saveAsTextFile("/home/neyao/spark/data/words.txt");
         System.out.println("=========================================================");
         System.out.println();
         System.out.println();
