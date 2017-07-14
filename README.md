@@ -8,8 +8,8 @@ This project shows the usage of spark java code.
 Using maven, i.g. mvn package
 
 **2. 在spark中运行**
-有两种方式可以在spark中运行：
-1）命令行的方式
+有两种方式可以在spark中运行：  
+1）命令行的方式  
 Use spark-submit to run your application
 $ YOUR_SPARK_HOME/bin/spark-submit --class "org.oursight.demo.spark.HelloSpark" --master local ../mine-job/spark-demo-1.0.0.jar
 
@@ -23,7 +23,7 @@ mesos://HOST:PORT 连接到指定的 Mesos 集群，需要指定端口。
 yarn-client客户端模式 连接到 YARN 集群。需要配置 HADOOP_CONF_DIR。
 yarn-cluster集群模式 连接到 YARN 集群。需要配置 HADOOP_CONF_DIR。
 
-2）直接通过java -cp运行
+2）直接通过java -cp运行  
 假设
 - SPARK_HOME=/home/neyao/spark/spark1.6.3-bin-hadoop2.6
 - <SPARK_HOME>下创建了一个目录extlib放我们的jar

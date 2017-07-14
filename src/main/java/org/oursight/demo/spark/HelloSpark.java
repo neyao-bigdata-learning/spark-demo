@@ -25,7 +25,7 @@ public class HelloSpark {
     }
 
     public static void showBasicUsage() {
-        String testFile = "/home/neyao/spark/data/words.txt";
+        String testFile = "/Users/neyao/dev/spark/data/demo/words.txt";
 
         SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
         sparkConf.setMaster("local");
@@ -35,6 +35,7 @@ public class HelloSpark {
 
 
         JavaRDD<String> data = sc.textFile(testFile).cache();
+
 
         long countA = data.filter(new Function<String, Boolean>() {
             public Boolean call(String s) throws Exception {
