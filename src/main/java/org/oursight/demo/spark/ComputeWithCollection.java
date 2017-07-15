@@ -54,8 +54,6 @@ public class ComputeWithCollection {
 
 
     //开始计算
-
-
     long t1 = System.currentTimeMillis();
     SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
     sparkConf.setMaster("local");
