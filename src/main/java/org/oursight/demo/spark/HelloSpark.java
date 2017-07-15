@@ -8,6 +8,7 @@ import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
+
 import scala.Tuple2;
 
 import java.util.Arrays;
@@ -18,105 +19,112 @@ import java.util.List;
  */
 public class HelloSpark {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        showBasicUsage();
+    showBasicUsage();
 //        wordCount();
-    }
+  }
 
-    public static void showBasicUsage() {
-        String testFile = "/Users/neyao/dev/spark/data/demo/words.txt";
+  public static void showBasicUsage() {
+    String testFile = "/Users/neyao/dev/spark/data/demo/words.txt";
 
-        SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
-        sparkConf.setMaster("local");
-        //sparkConf.setAppName("MyHelloSparkApp");
+    long t1 = System.currentTimeMillis();
+    SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
+    sparkConf.setMaster("local");
+    //sparkConf.setAppName("MyHelloSparkApp");
 
-        JavaSparkContext sc = new JavaSparkContext(sparkConf);
-
-
-        JavaRDD<String> data = sc.textFile(testFile).cache();
+    JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
 
-        long countA = data.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) throws Exception {
+    JavaRDD<String> data = sc.textFile(testFile).cache();
+
+
+    long countA = data.filter(new Function<String, Boolean>() {
+      public Boolean call(String s) throws Exception {
 //                System.out.println("s in countA = [" + s + "]");
-                return s.contains("lsi");
+        return s.contains("lsi");
 
-            }
-        }).count();
+      }
+    }).count();
 
-        long countB = data.filter(new Function<String, Boolean>() {
-            public Boolean call(String s) throws Exception {
+    long countB = data.filter(new Function<String, Boolean>() {
+      public Boolean call(String s) throws Exception {
 //                System.out.println("s in countB = [" + s + "]");
-                return s.contains("zhangsan");
-            }
-        }).count();
+        return s.contains("zhangsan");
+      }
+    }).count();
+    long t2 = System.currentTimeMillis();
 
-        System.out.println();
-        System.out.println();
-        System.out.println("========================= RESULT =========================");
-        System.out.println("Lines with yao: " + countA + ", lines with zhangsan: " + countB);
-        System.out.println("=========================================================");
-        System.out.println();
-        System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println("========================= RESULT=========================");
+    System.out.println("Lines with yao: " + countA + ", lines with zhangsan: " + countB);
+    System.out.println("time cost: " + (t2 - t1) + " ms");
+    System.out.println("=========================================================");
+    System.out.println();
+    System.out.println();
 
-    }
+  }
 
-    public static void wordCount() {
-        String testFile = "/home/neyao/spark/data/words.txt";
+  public static void wordCountingWithKey() {
+    String testFile = "/Users/neyao/dev/spark/data/demo/words.txt";
 
-        SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
-        sparkConf.setMaster("local");
-        JavaSparkContext sc = new JavaSparkContext(sparkConf);
+    long t1 = System.currentTimeMillis();
+    SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
+    sparkConf.setMaster("local");
+    JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
-        JavaRDD<String> data = sc.textFile(testFile);
-        JavaRDD<String> words = data.flatMap(new FlatMapFunction<String, String>() {
-            @Override
-            public Iterable<String> call(String s) throws Exception {
-                return Arrays.asList(s.split(" "));
-            }
-        });
+    JavaRDD<String> data = sc.textFile(testFile);
+    JavaRDD<String> words = data.flatMap(new FlatMapFunction<String, String>() {
+      @Override
+      public Iterable<String> call(String s) throws Exception {
+        return Arrays.asList(s.split(" "));
+      }
+    });
 
-        System.out.println("================== count ==================");
-        System.out.println("words.toDebugString() -----> " + words.toDebugString());
-        System.out.println();
-        System.out.println("words.toArray()-----> " + words.toArray());
-        System.out.println("============================================");
+    System.out.println("================== count ==================");
+    System.out.println("words.toDebugString() -----> " + words.toDebugString());
+    System.out.println();
+    System.out.println("words.toArray()-----> " + words.toArray());
+    System.out.println("============================================");
 
-        JavaPairRDD<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
-            @Override
-            public Tuple2<String, Integer> call(String s) throws Exception {
-                System.out.println("s in Tuple2 = [" + s + "]");
-                return new Tuple2<String, Integer>(s, 1);
-            }
-        });
-
-        System.out.println("================== pairs ==================");
-        System.out.println("pairs.toDebugString() -----> " + pairs.toDebugString());
-        System.out.println();
-        System.out.println("pairs.toArray()-----> " + pairs.toArray());
-        System.out.println("============================================");
+    JavaPairRDD<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
+      @Override
+      public Tuple2<String, Integer> call(String s) throws Exception {
+        System.out.println("s in Tuple2 = [" + s + "]");
+        return new Tuple2<String, Integer>(s, 1);
+      }
+    });
 
 
-
-        JavaPairRDD<String, Integer> counts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
-            public Integer call(Integer a, Integer b) {
-                System.out.println("counts, a:" +a +"; b:" + b);
-                return a + b;
-            }
-
-        });
-
-        System.out.println();
-        System.out.println();
-        System.out.println("========================= RESULT =========================");
-        counts.saveAsTextFile("/home/neyao/spark/data/words.txt");
-        System.out.println("=========================================================");
-        System.out.println();
-        System.out.println();
+    System.out.println("================== pairs ==================");
+    System.out.println("pairs.toDebugString() -----> " + pairs.toDebugString());
+    System.out.println();
+    System.out.println("pairs.toArray()-----> " + pairs.toArray());
+    System.out.println("============================================");
 
 
-    }
+    JavaPairRDD<String, Integer> counts = pairs.reduceByKey(new Function2<Integer, Integer, Integer>() {
+      public Integer call(Integer a, Integer b) {
+        System.out.println("counts, a:" + a + "; b:" + b);
+        return a + b;
+      }
+
+    });
+
+    long t2 = System.currentTimeMillis();
+
+    System.out.println();
+    System.out.println();
+    System.out.println("========================= RESULT =========================");
+    counts.saveAsTextFile("/home/neyao/spark/data/words.txt");
+    System.out.println("time cost: " + (t2 - t1) + " ms");
+    System.out.println("=========================================================");
+    System.out.println();
+    System.out.println();
+
+
+  }
 
 //    public static void testScala() {
 //
@@ -127,17 +135,19 @@ public class HelloSpark {
 //        }
 //    }
 
-    /**
-     * A simple method that shows the usage of java lambda expression
-     */
-    public static void testLambda() {
-        String[] atp = {"Rafael Nadal", "Novak Djokovic",
-                "Stanislas Wawrinka",
-                "David Ferrer", "Roger Federer",
-                "Andy Murray", "Tomas Berdych",
-                "Juan Martin Del Potro"};
-        List<String> players = Arrays.asList(atp);
+  /**
+   * A simple method that shows the usage of java lambda expression
+   */
+  public static void testLambda() {
+    String[] atp = {"Rafael Nadal", "Novak Djokovic",
+            "Stanislas Wawrinka",
+            "David Ferrer", "Roger Federer",
+            "Andy Murray", "Tomas Berdych",
+            "Juan Martin Del Potro"};
+    List<String> players = Arrays.asList(atp);
 
-        players.forEach((player) -> System.out.println(player + ";"));
-    }
+    players.forEach((player) -> System.out.println(player + ";"));
+  }
+
+
 }
