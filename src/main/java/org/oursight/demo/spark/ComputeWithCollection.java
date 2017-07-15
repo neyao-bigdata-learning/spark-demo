@@ -69,8 +69,10 @@ public class ComputeWithCollection {
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     JavaRDD<String> targetRDD = sc.parallelize(target);
+
 //    targetRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/targetRDD");
     JavaRDD<String> sampleRDD = sc.parallelize(sample);
+
 
 
     // 将两个做笛卡尔乘积
@@ -204,6 +206,8 @@ public class ComputeWithCollection {
       System.out.println(all._1() + "    " + all._2());
     }
 //    mergedRDD2_key2_reduced.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/mergedRDD2_key2_reduced");
+//    System.out.println("mergedRDD2_key2_reduced： "+ mergedRDD2_key2_reduced.collect().size());
+    System.out.println("mergedRDD2_key2_reduced： "+ mergedRDD2_key2_reduced.count());
     System.out.println("--------");
     System.out.println();
 
