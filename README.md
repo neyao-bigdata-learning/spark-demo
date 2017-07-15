@@ -34,6 +34,13 @@ java -Dspark.master=local -cp <SPARK_HOME>/lib/*:<SPARK_HOME>/extlib/spark-demo-
 SparkConf sparkConf = new SparkConf().setAppName("Neyao's Spark Helloworld");
 sparkConf.setMaster("local");
 
+通过Java运行时，Spark的log4j.properties配置好像不管用了，可以i通过以下编程的方式进行修改：  
+   import org.apache.log4j.Logger  
+   import org.apache.log4j.Level  
+   Logger.getLogger("org").setLevel(Level.WARN);  
+   Logger.getLogger("akka").setLevel(Level.WARN);  
+
+
 Reference
 ---------
 - Quick start docs:  

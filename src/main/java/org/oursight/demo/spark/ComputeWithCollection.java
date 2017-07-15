@@ -1,5 +1,7 @@
 package org.oursight.demo.spark;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -24,6 +26,11 @@ import scala.tools.cmd.gen.AnyVals;
 public class ComputeWithCollection {
 
   public static void main(String[] args) {
+
+    // 手工将日志关闭
+    Logger.getLogger("org").setLevel(Level.WARN);
+    Logger.getLogger("akka").setLevel(Level.WARN);
+//    Logger.getLogger("akka").setLevel(Level.OFF);
 
 
 //    test();
@@ -62,14 +69,14 @@ public class ComputeWithCollection {
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     JavaRDD<String> targetRDD = sc.parallelize(target);
-    targetRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/targetRDD");
+//    targetRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/targetRDD");
     JavaRDD<String> sampleRDD = sc.parallelize(sample);
 
 
     // 将两个做笛卡尔乘积
     JavaPairRDD<String, String> mergedRDD = targetRDD.cartesian((JavaRDDLike) sampleRDD);
     System.out.println("---- merge start ----");
-    mergedRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/mergedRDD");
+//    mergedRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/mergedRDD");
     for (Tuple2<String, String> all : mergedRDD.collect()) {
       System.out.println(all._1() + "    " + all._2());
     }
@@ -196,7 +203,7 @@ public class ComputeWithCollection {
     for (Tuple2<String, Integer> all : mergedRDD2_key2_reduced.collect()) {
       System.out.println(all._1() + "    " + all._2());
     }
-    mergedRDD2_key2_reduced.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/mergedRDD2_key2_reduced");
+//    mergedRDD2_key2_reduced.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/mergedRDD2_key2_reduced");
     System.out.println("--------");
     System.out.println();
 
