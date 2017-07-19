@@ -34,9 +34,9 @@ public class PairRDDExamples {
 
 
     List<Integer> list1 = new ArrayList<>();
-      list1.add(11);
-      list1.add(22);
-      list1.add(33);
+    list1.add(11);
+    list1.add(22);
+    list1.add(33);
 
     List<Integer> list2 = new ArrayList<>();
     list2.add(33);
@@ -61,7 +61,13 @@ public class PairRDDExamples {
     System.out.println();
     System.out.println();
 
+    //  ===  flatMapValues  ===
     JavaPairRDD<String, Integer> pairRDD2 = pairRDD1.flatMapValues(
+            (Function<List<Integer>, Iterable<Integer>>) v1 -> v1
+
+    );
+    // 上边lamda表达式的Java形式, 的到的pairRDD3和pairRDD2是一模一样的
+    JavaPairRDD<String, Integer> pairRDD3 = pairRDD1.flatMapValues(
             new Function<List<Integer>, Iterable<Integer>>() {
 
               @Override
@@ -79,6 +85,31 @@ public class PairRDDExamples {
     System.out.println("---- pairRDD2 done ----");
     System.out.println();
     System.out.println();
+
+
+    // === convert to RDD ==
+
+    // lambda 表达式
+//    JavaRDD<Tuple2<String, Integer>> rdd1_from_pairRDD2 = pairRDD2.map(
+//            (Function<Tuple2<String, Integer>, Tuple2<String, Integer>>) v1 -> v1
+//    );
+    JavaRDD<Tuple2<String, Integer>> rdd1_from_pairRDD2 = pairRDD2.map(
+            new Function<Tuple2<String, Integer>, Tuple2<String, Integer>>() {
+              @Override
+              public Tuple2<String, Integer> call(Tuple2<String, Integer> v1) throws Exception {
+                return v1;
+              }
+            }
+    );
+    System.out.println("---- rdd1_from_pairRDD2 start ----");
+    for (Tuple2<String, Integer> all : rdd1_from_pairRDD2.collect()) {
+      System.out.println(all);
+//      System.out.println(all._1() + "    " + "    " + all._2());
+    }
+    System.out.println("---- rdd1_from_pairRDD2 done ----");
+    System.out.println();
+    System.out.println();
+
 
   }
 

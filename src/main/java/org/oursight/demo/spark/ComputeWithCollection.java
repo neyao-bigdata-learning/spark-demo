@@ -98,17 +98,17 @@ public class ComputeWithCollection {
               return tuple2;
             });
     // 这个是上边的lambda表达式的java代码
-//    JavaPairRDD<String, Boolean> mergedRDDNew = mergedRDD.mapToPair(new PairFunction<Tuple2<String, String>, String,
-//            Boolean>() {
-//
-//      public Tuple2<String, Boolean> call(Tuple2<String, String> t) {
-//        String s = t._1() + "  " + t._2();
-//        boolean result = t._1().contains(t._2());
-//        Tuple2 tuple2 = new Tuple2(s, result);
-//        return tuple2;
-//      }
-//
-//    });
+    JavaPairRDD<String, Boolean> mergedRDDNew = mergedRDD.mapToPair(new PairFunction<Tuple2<String, String>, String,
+            Boolean>() {
+
+      public Tuple2<String, Boolean> call(Tuple2<String, String> t) {
+        String s = t._1() + "  " + t._2();
+        boolean result = t._1().contains(t._2());
+        Tuple2 tuple2 = new Tuple2(s, result);
+        return tuple2;
+      }
+
+    });
 
     for (Tuple2<Tuple2<String, String>, Boolean> all : mergedRDD1.collect()) {
       System.out.println(all._1()._1() + "    " + "    " + all._1()._2() + "    " + all._2());
