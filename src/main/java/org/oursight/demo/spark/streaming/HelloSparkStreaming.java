@@ -22,6 +22,8 @@ import scala.Tuple2;
  *
  * 完整的例子：https://github.com/apache/spark/blob/v2.2.0/examples/src/main/java/org/apache/spark/examples/streaming/JavaNetworkWordCount.java
  *
+ * 使用netcat（mac上自带）来启动一个端口在9999的监听服务，命令行：nc -lk 9999
+ *
  * Created by yaonengjun on 2017/8/3 下午2:32.
  */
 public class HelloSparkStreaming {
