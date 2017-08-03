@@ -1,4 +1,4 @@
-package org.oursight.demo.spark;
+package org.oursight.demo.spark.basic;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -7,11 +7,13 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaRDDLike;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.api.java.function.VoidFunction;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import scala.Tuple2;
@@ -72,8 +74,6 @@ public class ComputeWithCollection {
 
 //    targetRDD.saveAsTextFile("/Users/neyao/Desktop/spark_rdd_output/targetRDD");
     JavaRDD<String> sampleRDD = sc.parallelize(sample);
-
-
 
     // 将两个做笛卡尔乘积
     JavaPairRDD<String, String> mergedRDD = targetRDD.cartesian((JavaRDDLike) sampleRDD);

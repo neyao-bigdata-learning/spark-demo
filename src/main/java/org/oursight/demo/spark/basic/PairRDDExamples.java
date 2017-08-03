@@ -1,4 +1,4 @@
-package org.oursight.demo.spark;
+package org.oursight.demo.spark.basic;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;

@@ -1,4 +1,4 @@
-package org.oursight.demo.spark;
+package org.oursight.demo.spark.basic;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -12,6 +12,7 @@ import org.apache.spark.api.java.function.PairFunction;
 import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,8 +22,9 @@ public class HelloSpark {
 
   public static void main(String[] args) {
 
-    showBasicUsage();
+//    showBasicUsage();
 //        wordCount();
+    wordCountingWithKey();
   }
 
   public static void showBasicUsage() {
@@ -75,17 +77,22 @@ public class HelloSpark {
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
 
     JavaRDD<String> data = sc.textFile(testFile);
+
     JavaRDD<String> words = data.flatMap(new FlatMapFunction<String, String>() {
       @Override
-      public Iterable<String> call(String s) throws Exception {
-        return Arrays.asList(s.split(" "));
+      public Iterator<String> call(String s) throws Exception {
+        String[] strings = s.split(" ");
+        List<String>  result = Arrays.asList(strings);
+        return result.iterator();
       }
     });
 
     System.out.println("================== count ==================");
     System.out.println("words.toDebugString() -----> " + words.toDebugString());
     System.out.println();
-    System.out.println("words.toArray()-----> " + words.toArray());
+    System.out.println("words.toString()-----> " + words.toString());
+    System.out.println("words.toDebugString()-----> " + words.toDebugString());
+//    System.out.println("words.toArray()-----> " + words.toArray());
     System.out.println("============================================");
 
     JavaPairRDD<String, Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {
@@ -100,7 +107,8 @@ public class HelloSpark {
     System.out.println("================== pairs ==================");
     System.out.println("pairs.toDebugString() -----> " + pairs.toDebugString());
     System.out.println();
-    System.out.println("pairs.toArray()-----> " + pairs.toArray());
+    System.out.println("pairs.toString()-----> " + pairs.toString());
+//    System.out.println("pairs.toArray()-----> " + pairs.toArray());
     System.out.println("============================================");
 
 
