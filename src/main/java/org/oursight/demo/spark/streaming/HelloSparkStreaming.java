@@ -3,6 +3,7 @@ package org.oursight.demo.spark.streaming;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
@@ -35,7 +36,6 @@ public class HelloSparkStreaming {
 
     // Create the context with a 1 second batch size
     SparkConf sparkConf = new SparkConf().setAppName("JavaNetworkWordCount");
-
     // 注意，这里至少需要有2个, 不能写成local
     // 见：https://stackoverflow.com/questions/28050262/spark-streaming-network-wordcount-py-does-not-print-result
     sparkConf.setMaster("local[*]");
@@ -45,7 +45,9 @@ public class HelloSparkStreaming {
     String tcpHost = "localhost";
     Integer tcpPort = 9999;
 
+    //从TCP端口来进行监听
     JavaReceiverInputDStream<String> linesInput = streamingContext.socketTextStream(tcpHost, tcpPort);
+
     JavaDStream<String> words = linesInput.flatMap(
             (FlatMapFunction<String, String>) s -> Arrays.asList(s.split(" ")).iterator()
     );
