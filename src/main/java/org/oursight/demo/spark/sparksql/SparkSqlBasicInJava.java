@@ -39,6 +39,25 @@ public class SparkSqlBasicInJava {
 //    Dataset<Row> df = session.read().csv("person.csv");
     Dataset<Row> df = session.read().csv("/Users/neyao/workspace/mine/spark-demo/src/main/resources/person.csv");
     df.show();
+    df.printSchema();
+
+//    df.withColumnRenamed("_c0", "name");
+//    df.withColumnRenamed("_c1", "age");
+//    df.withColumnRenamed("_c2", "weight");
+
+    String[] names =  {"name", "age", "weight"};
+    df = df.toDF(names);
+
+    System.out.println("After renamed column");
+    df.show();
+    df.printSchema();
+
+    df.select("age").show();
+    System.out.println();
+    df.select("age").show(2);
+
+    df.groupBy("age").count().show();
+
   }
 }
 
