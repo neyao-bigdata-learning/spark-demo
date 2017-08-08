@@ -10,6 +10,6 @@ public class Utils {
   private static final char[] chars = new char[]{'a','b','c','d'};
 
   public static String random(int length) {
-    return RandomStringUtils.random(3, chars);
+    return RandomStringUtils.random(length, chars);
   }
 }
