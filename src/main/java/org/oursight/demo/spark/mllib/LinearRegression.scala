@@ -71,6 +71,14 @@ object LinearRegression {
     v = Vectors.dense(d)
     println(model.predict(v))  // 可以看到，两次计算出来的值，差异并不大
 
+    d = Array[Double](0, 0, 0)  // 再给一个完全不符的值
+    v = Vectors.dense(d)
+    println(model.predict(v))  // 计算结果为0
+
+    d = Array[Double](0.1, 0.1, 0.1)  // 再给一个差得很远的值
+    v = Vectors.dense(d)
+    println(model.predict(v))  // 计算结果为0
+
     println("-----------------")
 //    System.out.println(model.predict(v))
 //    System.out.println(model1.predict(v))
