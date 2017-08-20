@@ -28,7 +28,7 @@ import scala.Tuple2;
  */
 public class CollaborativeFilteringInJava implements Serializable {
 
-  private static final Pattern TAB = Pattern.compile(" ");
+  private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
   public MatrixFactorizationModel buildModel(RDD<Rating> rdd) { //训练模型
     int rank = 10;
@@ -45,7 +45,7 @@ public class CollaborativeFilteringInJava implements Serializable {
     JavaRDD<String> lines = sc.textFile("/Users/neyao/workspace/mine/spark-demo/src/main/resources" +
             "/collaborative_filtering_100.txt");
     JavaRDD<Rating> ratings = lines.map(line -> {
-      String[] tok = TAB.split(line);
+      String[] tok = SPACE_PATTERN.split(line);
       int x = Integer.parseInt(tok[0]);
       int y = Integer.parseInt(tok[1]);
       double rating = Double.parseDouble(tok[2]);
