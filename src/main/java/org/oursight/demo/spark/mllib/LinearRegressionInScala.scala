@@ -11,7 +11,7 @@ import org.apache.spark.{SparkConf, SparkContext}
   * #用户ID, 平均相似度  最大相似度 命中率
   * Created by yaonengjun on 2017/8/18 下午8:15.
   */
-object LinearRegression {
+object LinearRegressionInScala {
 
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org").setLevel(Level.WARN)
@@ -24,7 +24,7 @@ object LinearRegression {
     val traningDataRDD = sc.textFile("/Users/neyao/workspace/mine/spark-demo/src/main/resources/lr_traning.txt")
     val exampleFromTraningDataRDD = traningDataRDD.map { line =>
       println(line)
-      val parts = line.split(", ")
+      val parts = line.split(",")
       println("parts: " + parts.deep.mkString("\n"))
       LabeledPoint(parts(0).toDouble, Vectors.dense(parts(1).split(' ').map(_.toDouble)))
     }.cache()
@@ -69,15 +69,21 @@ object LinearRegression {
 
     d = Array[Double](0.5, 0.6, 0.8)  // 和标签777略有区别
     v = Vectors.dense(d)
+    println("和标签777完全一致的数据，计算结果")
     println(model.predict(v))  // 可以看到，两次计算出来的值，差异并不大
+    println
 
     d = Array[Double](0, 0, 0)  // 再给一个完全不符的值
     v = Vectors.dense(d)
+    println("和标签777完全不符的数据，计算结果")
     println(model.predict(v))  // 计算结果为0
+    println
 
     d = Array[Double](0.1, 0.1, 0.1)  // 再给一个差得很远的值
     v = Vectors.dense(d)
+    println("和标签777差得很远的数据，计算结果")
     println(model.predict(v))  // 计算结果为0
+    println
 
     println("-----------------")
 //    System.out.println(model.predict(v))
