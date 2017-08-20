@@ -15,7 +15,7 @@ import org.apache.spark.rdd.RDD;
 import java.util.Arrays;
 
 /**
- *
+ * 训练数据中，其中第一列代表类别，训练数据中有三种类别：0、1、2。第2-4列代表数据的三个维度，可以想象成前文中性别分类算法中的头发长度、服饰和体型这三个要素。
  * Created by yaonengjun on 2017/8/20 下午4:05.
  */
 public class NaiveBayesInJava {
@@ -50,7 +50,7 @@ public class NaiveBayesInJava {
     JavaPairRDD<Double, Double> predictionAndLabel = prediction.zip(test.map(LabeledPoint::label));
     //用测试数据来验证模型的精度
     double accuracy = 1.0 * predictionAndLabel.filter(pl -> pl._1().equals(pl._2())).count() / test.count();
-    System.out.println("Accuracy=" + accuracy);
+    System.out.println("计算精度=" + accuracy);
 
     //预测类别
     System.out.println("Prediction of (0.5, 3.0, 0.5):" + model.predict(Vectors.dense(new double[]{0.5, 3.0, 0.5})));
