@@ -16,10 +16,9 @@
     </properties>
 
     <repositories>
-        <repository>
-            <id>releases</id>
-            <url>http://hc-repo.alibaba.net:8081/nexus/content/repositories/public</url>
-        </repository>
+
+
+
         <repository>
             <id>Cloudera beta repo</id>
             <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>

@@ -21,6 +21,12 @@
             <!--<scope>provided</scope>-->
         <!--</dependency>-->
 
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>portable-1.3.2</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql_2.10 -->
         <dependency>
