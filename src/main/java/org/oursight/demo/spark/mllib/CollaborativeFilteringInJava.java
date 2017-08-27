@@ -22,7 +22,7 @@ import scala.Tuple2;
  * 注意：本类的几个关键点：
  * 1）类本身必须是实现 Serializable的
  * 2）numIterations大于5时，要设置-Xss10m，否则运行时会StackOverFlow， see：http://f.dataguru.cn/spark-368353-1-1.html
- *
+ * <p>
  * 测试数据集中，其中第一列为userid，第二列为movieid，第三列为评分，第四列为timestamp（未使用）。
  * Created by yaonengjun on 2017/8/20 下午5:33.
  */
@@ -43,7 +43,7 @@ public class CollaborativeFilteringInJava implements Serializable {
     SparkConf sparkConf = new SparkConf().setAppName("JavaALS").setMaster("local[2]");
     JavaSparkContext sc = new JavaSparkContext(sparkConf);
     JavaRDD<String> lines = sc.textFile("/Users/neyao/workspace/mine/spark-demo/src/main/resources" +
-            "/collaborative_filtering_100.txt");
+            "/collaborative_filtering_10.txt");
     JavaRDD<Rating> ratings = lines.map(line -> {
       String[] tok = SPACE_PATTERN.split(line);
       int x = Integer.parseInt(tok[0]);
@@ -51,7 +51,8 @@ public class CollaborativeFilteringInJava implements Serializable {
       double rating = Double.parseDouble(tok[2]);
       return new Rating(x, y, rating);
     });
-    RDD<Rating>[] splits = ratings.rdd().randomSplit(new double[]{0.6,0.4}, 11L);
+    double traningRate = 1.0;
+    RDD<Rating>[] splits = ratings.rdd().randomSplit(new double[]{traningRate, 1 - traningRate}, 11L);
     return splits;
   }
 
@@ -74,6 +75,23 @@ public class CollaborativeFilteringInJava implements Serializable {
     System.out.println("Mean Squared Error1 = " + MSE1); //测试数据的MSE
     System.out.println("------------------------");
     System.out.println();
+
+    System.out.println("------ 预测结果 -------");
+    // 大小为10行的数据样本
+    System.out.println(model.predict(1, 2)); // 实际存在的数据，应该是10
+    System.out.println(model.predict(3, 2)); // 实际存在的数据，应该是8
+    System.out.println(model.predict(1, 5)); // 预测的数据， 1对5应该较感兴趣（实际计算出来的结果是4左右）
+//    System.out.println(model.predict(1, 99));  // 不存在的产品ID，会抛异常NoSuchElementException
+//    System.out.println(model.predict(99, 2));  // 不存在的用户ID，会抛异常NoSuchElementException
+
+    // 大小为100行的数据样本
+//    System.out.println(model.predict(196, 242));  // 实际存在的数据，应该是3
+//    System.out.println(model.predict(22, 377)); // 实际存在的数据，应该是1
+//    System.out.println(model.predict(286, 1014)); // 实际存在的数据，应该是5
+//
+//    System.out.println(model.predict(196, 377)); // 预测的数据
+    System.out.println("------------------------");
+    System.out.println();
   }
 
   public Double getMSE(JavaRDD<Rating> ratings, MatrixFactorizationModel model) { //计算MSE
@@ -92,7 +110,7 @@ public class CollaborativeFilteringInJava implements Serializable {
               @Override
               public Tuple2<Tuple2<Integer, Integer>, Double> call(Rating rating) throws Exception {
                 Tuple2 t1 = new Tuple2<>(rating.user(), rating.product());
-                System.out.println("t1: " + t1 +"   rating: " + rating.rating());
+                System.out.println("t1: " + t1 + "   rating: " + rating.rating());
                 return new Tuple2<>(t1, rating.rating());
               }
             });
