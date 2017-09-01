@@ -2,10 +2,10 @@ package org.oursight.demo.spark.mllib.advance.mimir;
 
 
 import org.apache.commons.io.FileUtils;
+import org.oursight.demo.spark.mllib.advance.LrClassifyModelInChinese;
 import org.oursight.demo.spark.util.FileUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,12 +19,12 @@ public class UseInJava {
 
   public static void main(String[] args) throws Exception {
 //    train();
-    predict("/Users/neyao/temp/test_004.txt");
+    predict("/Users/neyao/temp/test_008.txt");
   }
 
   public static void train() throws Exception {
     FileUtils.deleteDirectory(new File(MODEL_PATH));
-    UseLRClassifyModel model = new UseLRClassifyModel();
+    LrClassifyModelInChinese model = new LrClassifyModelInChinese();
     model.loadTrainData();
     model.buildModel();
 
@@ -32,7 +32,7 @@ public class UseInJava {
   }
 
   public static void predict(String resultFilePath) throws Exception {
-    UseLRClassifyModel model = new UseLRClassifyModel();
+    LrClassifyModelInChinese model = new LrClassifyModelInChinese();
     model.loadTrainData();
     model.loadModel();
 

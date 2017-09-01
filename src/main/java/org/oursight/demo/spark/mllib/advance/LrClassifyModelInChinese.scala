@@ -1,4 +1,4 @@
-package org.oursight.demo.spark.mllib.advance.mimir
+package org.oursight.demo.spark.mllib.advance
 
 import java.io.File
 
@@ -6,11 +6,10 @@ import org.apache.commons.io.FileUtils
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.mllib.classification.{LogisticRegressionModel, LogisticRegressionWithLBFGS}
 import org.apache.spark.mllib.evaluation.BinaryClassificationMetrics
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.mllib.feature.{IDFModel, _}
-import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.mllib.regression.{GeneralizedLinearModel, LabeledPoint}
 import org.apache.spark.rdd.RDD
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
   * Created by yaonengjun on 2017/8/23 下午4:32.
@@ -18,7 +17,7 @@ import org.apache.spark.rdd.RDD
 
 //class UseLRClassifyModel()
 
-class UseLRClassifyModel {
+class LrClassifyModelInChinese {
 
 
   val positive_file = "/Users/neyao/workspace/mine/spark-demo/src/main/resources/samples/gambling_words_positive.txt"
@@ -119,7 +118,9 @@ class UseLRClassifyModel {
     // 读取训练好的模型
     model = LogisticRegressionModel.load(sc, modelPath)
     //清除threshold  预测值返回0-1的double
-    model.clearThreshold()
+//    model.clearThreshold()
+    model.setThreshold(0.49)  //FIXME  默认是0.5，不应该改的，但是不改的话所有命中的值都是0.5
+    model
   }
 
   def predictModel(input: String): Double = {
