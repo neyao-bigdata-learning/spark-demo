@@ -115,7 +115,7 @@ public class MyWordCounts {
 
   public static void segmentByFile2() throws IOException {
     List<String> lines = FileUtils.readLines(new File
-            ("/Users/neyao/workspace/mine/spark-demo/src/main/resources/samples/gambling_sample_lines.txt"));
+            ("/Users/neyao/Documents/idea_gamble_samples_positive.txt"));
 
 
     String filePath = "/Users/neyao/workspace/mine/spark-demo/src/main/resources/samples/gambling_words_positive.txt";
@@ -126,6 +126,9 @@ public class MyWordCounts {
       StringBuffer str = new StringBuffer();
       for (Term term : termList) {
         if (!ChineseUtil.isChinese(term.word))
+          continue;
+
+        if(term.word.length() <2)
           continue;
 
         str.append(term.word).append(" ");

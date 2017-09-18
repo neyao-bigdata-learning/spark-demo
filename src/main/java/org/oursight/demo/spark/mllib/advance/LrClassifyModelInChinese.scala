@@ -118,8 +118,8 @@ class LrClassifyModelInChinese {
     // 读取训练好的模型
     model = LogisticRegressionModel.load(sc, modelPath)
     //清除threshold  预测值返回0-1的double
-//    model.clearThreshold()
-    model.setThreshold(0.49)  //FIXME  默认是0.5，不应该改的，但是不改的话所有命中的值都是0.5
+    model.clearThreshold()
+//    model.setThreshold(0.49)  //FIXME  默认是0.5，不应该改的，但是不改的话所有命中的值都是0.5
     model
   }
 
@@ -133,6 +133,11 @@ class LrClassifyModelInChinese {
     //正则化
     val normalizer = new Normalizer
     val normalPredict = normalizer.transform(tfIdf)
+    println()
+    println("------------")
+    println(normalPredict)
+    println("------------")
+    println()
 
     //标准化
     val scalerPredict = scalerModel.transform(normalPredict)

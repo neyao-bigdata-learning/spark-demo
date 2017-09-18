@@ -1,8 +1,12 @@
 package org.oursight.demo.spark.mllib.advance.mimir;
 
 
+import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.NLPTokenizer;
+
 import org.apache.commons.io.FileUtils;
 import org.oursight.demo.spark.mllib.advance.LrClassifyModelInChinese;
+import org.oursight.demo.spark.util.ChineseUtil;
 import org.oursight.demo.spark.util.FileUtil;
 
 import java.io.File;
@@ -18,8 +22,8 @@ public class UseInJava {
           "/lrModel";
 
   public static void main(String[] args) throws Exception {
-//    train();
-    predict("/Users/neyao/temp/test_008.txt");
+    train();
+//    predict("/Users/neyao/temp/test_010.txt");
   }
 
   public static void train() throws Exception {
@@ -39,11 +43,34 @@ public class UseInJava {
 
 //    String line = "(D6.CC)国际品牌,值得信赖国际品牌,值得信赖国际品牌,值得信赖国际品牌, (D6.CC)国际品牌,值得信赖国际品牌,值得信赖国际品牌,值得信赖国际品牌,值得信赖,(D6.CC)国际品牌," +
 //            "值得信赖国际品牌,值得信赖国际品{}a{}a{}a{}";
-//    System.out.println(model.predictModel(line));
+//    List<Term> termList = NLPTokenizer.segment(line);
+//    StringBuffer str = new StringBuffer();
+//    for (Term term : termList) {
+//      if (!ChineseUtil.isChinese(term.word))
+//        continue;
+//
+//      str.append(term.word).append(" ");
+//
+//    }
+//
+//    System.out.println(model.predictModel(str.toString()));
+
+
     List<String> lines = FileUtils.readLines(new File("/Users/neyao/workspace/mine/spark-demo/src/main/resources/samples/gambling_sample_lines.txt"));
     for (String onLineInFile : lines) {
 //      /Users/neyao/Desktop
-      double result = model.predictModel(onLineInFile);
+      List<Term> termList = NLPTokenizer.segment(onLineInFile);
+      StringBuffer str = new StringBuffer();
+      for (Term term : termList) {
+        if (!ChineseUtil.isChinese(term.word))
+          continue;
+
+        str.append(term.word).append(" ");
+
+      }
+
+//      System.out.println(model.predictModel(str.toString()));
+      double result = model.predictModel(str.toString());
       FileUtil.appendFile(resultFilePath, result + "    " + onLineInFile);
     }
 
