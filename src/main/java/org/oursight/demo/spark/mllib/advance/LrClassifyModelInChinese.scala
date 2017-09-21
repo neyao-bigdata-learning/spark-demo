@@ -112,6 +112,7 @@ class LrClassifyModelInChinese {
     val file = new File(modelPath)
     FileUtils.deleteQuietly(file)
     model.save(sc, modelPath)
+
   }
 
   def loadModel(): GeneralizedLinearModel = {
@@ -119,7 +120,7 @@ class LrClassifyModelInChinese {
     model = LogisticRegressionModel.load(sc, modelPath)
     //清除threshold  预测值返回0-1的double
     model.clearThreshold()
-//    model.setThreshold(0.49)  //FIXME  默认是0.5，不应该改的，但是不改的话所有命中的值都是0.5
+    //    model.setThreshold(0.49)  //FIXME  默认是0.5，不应该改的，但是不改的话所有命中的值都是0.5
     model
   }
 
@@ -148,22 +149,52 @@ class LrClassifyModelInChinese {
   /**
     * 对测试数据进行预测 并统计ROC AOC曲线
     */
+  /* def testModel(): Unit = {
+
+     val localModel = loadModel()
+     //分别预测正负例
+     val negScoreAndLabel = negTestRDD.map { negData =>
+       (localModel.predict(negData.features), 0.0)
+     }
+     val posScoreAndLabel = posTestRDD.map { posData =>
+       (localModel.predict(posData.features), 1.0)
+     }
+     val metrics = new BinaryClassificationMetrics(negScoreAndLabel ++ posScoreAndLabel)
+     println("====== Test result =====")
+     println(localModel.getClass.getSimpleName + ", Area under PR:" + metrics.areaUnderPR() + ",Area under ROC:" + metrics
+       .areaUnderROC() + ",neg size:" + negScoreAndLabel.count() + ", pos size:" + posScoreAndLabel.count())
+     println("======================")
+   }*/
+
+  /**
+    * 对测试数据进行预测 并统计ROC AOC曲线
+    */
   def testModel(): Unit = {
 
-    val localModel = loadModel()
+    val localModel = loadModel
     //分别预测正负例
-    val negScoreAndLabel = negTestRDD.map { negData =>
-      (localModel.predict(negData.features), 0.0)
-    }
     val posScoreAndLabel = posTestRDD.map { posData =>
       (localModel.predict(posData.features), 1.0)
     }
-    val metrics = new BinaryClassificationMetrics(negScoreAndLabel ++ posScoreAndLabel)
-    println("====== Test result =====")
-    println(localModel.getClass.getSimpleName + ", Area under PR:" + metrics.areaUnderPR() + ",Area under ROC:" + metrics
-      .areaUnderROC() + ",neg size:" + negScoreAndLabel.count() + ", pos size:" + posScoreAndLabel.count())
-    println("======================")
-  }
+    val negScoreAndLabel = negTestRDD.map { negData =>
+      (localModel.predict(negData.features), 0.0)
+    }
 
+    val tp = posScoreAndLabel.filter( label => label._1 > 0.5).count()
+    val tn = negScoreAndLabel.filter( label => label._1 <= 0.5).count()
+    val precision = tp.toDouble / (tp + negScoreAndLabel.count() - tn)
+    val recall = tp.toDouble / posScoreAndLabel.count()
+    val metrics = new BinaryClassificationMetrics(negScoreAndLabel ++ posScoreAndLabel)
+
+    println()
+    println()
+    println("------------------")
+    println(scalerModel)
+    println(localModel.getClass.getSimpleName + ", Area under PR:" + metrics.areaUnderPR() + ",Area under ROC:" + metrics
+      .areaUnderROC() + ",neg size:" + negScoreAndLabel.count() + ", pos size:" + posScoreAndLabel.count() + ",tp:" + tp + ",tn:" + tn + ", precision:" + precision + ",reacll:" + recall)
+    println("------------------")
+    println()
+    println()
+  }
 
 }

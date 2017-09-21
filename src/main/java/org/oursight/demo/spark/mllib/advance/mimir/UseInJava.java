@@ -6,6 +6,7 @@ import com.hankcs.hanlp.tokenizer.NLPTokenizer;
 
 import org.apache.commons.io.FileUtils;
 import org.oursight.demo.spark.mllib.advance.LrClassifyModelInChinese;
+import org.oursight.demo.spark.mllib.advance.MyWordSpliter;
 import org.oursight.demo.spark.util.ChineseUtil;
 import org.oursight.demo.spark.util.FileUtil;
 
@@ -25,6 +26,8 @@ public class UseInJava {
     train();
 //    predict("/Users/neyao/temp/test_010.txt");
   }
+
+
 
   public static void train() throws Exception {
     FileUtils.deleteDirectory(new File(MODEL_PATH));
