@@ -38,10 +38,14 @@ public class ReadParquet {
     System.out.println(session);
 
     Dataset<Row> dataset = sqlContext.read().parquet
-            ("/Users/neyao/workspace/mine/spark-demo/src/main/resources/model/gambling/lrModel/data/part-00000-5e53cb5f-7e18-4f32-b09c-3367a5ce764c.snappy.parquet");
+            ("/Users/neyao/workspace/mine/spark-demo/src/main/resources/model/gambling/lrModel/data/part-00000-28e39ff3-a33a-465b-b021-14cb7a2f6abd.snappy.parquet");
+
+//    Dataset<Row> dataset = sqlContext.read().parquet
+//            ("/Users/neyao/temp/model/data/part-00000-fabff815-22b8-4d80-a297-837533e592f2.snappy.parquet");
 
     dataset.show();
-    dataset.select("weights").write().json("/Users/neyao/1111.txt");
+    dataset.select("weights").write().json("/Users/neyao/temp/model/111.txt");
+//    dataset.select("weights").write().json("/Users/neyao/temp/model.txt");
   }
 }
 

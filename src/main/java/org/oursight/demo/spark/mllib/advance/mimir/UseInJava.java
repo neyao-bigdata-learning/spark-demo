@@ -23,8 +23,9 @@ public class UseInJava {
           "/lrModel";
 
   public static void main(String[] args) throws Exception {
-    train();
+//    train();
 //    predict("/Users/neyao/temp/test_010.txt");
+    predictOneLine("{投资资质查询}——正规平台资质查询!");
   }
 
 
@@ -36,6 +37,26 @@ public class UseInJava {
     model.buildModel();
 
     model.testModel();
+  }
+
+  public static void predictOneLine(String line) throws Exception {
+    LrClassifyModelInChinese model = new LrClassifyModelInChinese();
+    model.loadTrainData();
+    model.loadModel();
+
+
+    List<Term> termList = NLPTokenizer.segment(line);
+    StringBuffer str = new StringBuffer();
+    for (Term term : termList) {
+      if (!ChineseUtil.isChinese(term.word))
+        continue;
+
+      str.append(term.word).append(" ");
+
+    }
+
+    System.out.println(model.predictModel(str.toString()));
+
   }
 
   public static void predict(String resultFilePath) throws Exception {

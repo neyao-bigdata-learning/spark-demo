@@ -186,6 +186,7 @@ class LrClassifyModelInChinese {
     val recall = tp.toDouble / posScoreAndLabel.count()
     val metrics = new BinaryClassificationMetrics(negScoreAndLabel ++ posScoreAndLabel)
 
+
     println()
     println()
     println("------------------")

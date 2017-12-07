@@ -78,9 +78,9 @@ public class CollaborativeFilteringInJava implements Serializable {
 
     System.out.println("------ 预测结果 -------");
     // 大小为10行的数据样本
-    System.out.println(model.predict(1, 2)); // 实际存在的数据，应该是10
-    System.out.println(model.predict(3, 2)); // 实际存在的数据，应该是8
-    System.out.println(model.predict(1, 5)); // 预测的数据， 1对5应该较感兴趣（实际计算出来的结果是4左右）
+    System.out.println("（已知）用户1对物品2的兴趣：" + model.predict(1, 2)); // 实际存在的数据，应该是10
+    System.out.println("（已知）用户3对物品2的兴趣：" + model.predict(3, 2)); // 实际存在的数据，应该是8
+    System.out.println("*（未知）用户1对物品5的兴趣：" + model.predict(1, 5)); // 预测的数据， 1对5应该较感兴趣（实际计算出来的结果是4左右）
 //    System.out.println(model.predict(1, 99));  // 不存在的产品ID，会抛异常NoSuchElementException
 //    System.out.println(model.predict(99, 2));  // 不存在的用户ID，会抛异常NoSuchElementException
 

@@ -114,6 +114,9 @@ public class StreamInputFromCustomReceiver {
     words.print();*/
 
 
+
+
+
     long t1 = System.currentTimeMillis();
     JavaPairDStream<String, Integer> pairs = words.mapToPair(s -> new Tuple2<>(s, 1));
     JavaPairDStream<String, Integer> counts = pairs.reduceByKey((i1, i2) -> i1 + i2);
