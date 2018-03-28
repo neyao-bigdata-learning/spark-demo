@@ -41,6 +41,7 @@ public class SparkSqlBasicInJava {
     df.show();
     df.printSchema();
 
+
 //    df.withColumnRenamed("_c0", "name");
 //    df.withColumnRenamed("_c1", "age");
 //    df.withColumnRenamed("_c2", "weight");

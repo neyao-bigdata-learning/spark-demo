@@ -129,7 +129,7 @@ public class HelloSpark {
     System.out.println();
     System.out.println();
     System.out.println("========================= RESULT =========================");
-    counts.saveAsTextFile("/home/neyao/spark/data/words.txt");
+    counts.saveAsTextFile("/temp/words_result.txt");
     System.out.println("time cost: " + (t2 - t1) + " ms");
     System.out.println("=========================================================");
     System.out.println();
