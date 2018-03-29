@@ -72,6 +72,8 @@ public class HelloSparkStreaming {
     System.out.println(new Date() + " done. time cost: " + (t2 - t1) + " ms");
     System.out.println();
 
+
+
     streamingContext.start();
     streamingContext.awaitTermination();
 
